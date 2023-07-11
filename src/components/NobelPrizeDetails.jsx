@@ -9,13 +9,22 @@ export default function NobelPrizeDetails(props) {
   if (data !== 0) {
     formattedData = data.flatMap((item, index) => {
       const { categoryFullName, awardYear } = item;
-      return item.laureates.map((subitem) => ({
-        index: index + 1,
-        ชื่อรางวัล: categoryFullName.en,
-        ปีที่ได้รับรางวัล: awardYear,
-        ผู้ได้รับรางวัล: subitem.knownName?.en || subitem.orgName?.en,
-        แรงบันดาลใจ: subitem.motivation.en,
-      }));
+      if (item.laureates === undefined)
+        return {
+          index: index + 1,
+          ชื่อรางวัล: categoryFullName.en,
+          ปีที่ได้รับรางวัล: awardYear,
+          ผู้ได้รับรางวัล: " - ",
+          แรงบันดาลใจ: item.topMotivation?.en,
+        };
+      else
+        return item.laureates.map((subitem) => ({
+          index: index + 1,
+          ชื่อรางวัล: categoryFullName.en,
+          ปีที่ได้รับรางวัล: awardYear,
+          ผู้ได้รับรางวัล: subitem.knownName?.en || subitem.orgName?.en,
+          แรงบันดาลใจ: subitem.motivation.en,
+        }));
     });
   }
 
@@ -42,10 +51,20 @@ export default function NobelPrizeDetails(props) {
     }));
   }
 
+  const paginationConfig = {
+    pageSize: 10,
+    total: formattedData.length,
+  };
+
   return (
     <div className="border-black bg-yellow-400 border-2 max-w-full h-[83vh] flex justify-center items-center">
       {formattedData && formattedData.length !== 0 ? (
-        <Table columns={columns} dataSource={formattedData} className="mx-4" />
+        <Table
+          columns={columns}
+          dataSource={formattedData}
+          pagination={paginationConfig}
+          className="w-full h-full overflow-auto max-w-fit"
+        />
       ) : (
         <h1 className="text-red-600 text-center text-8xl">No-Data</h1>
       )}
