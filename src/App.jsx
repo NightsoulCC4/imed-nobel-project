@@ -1,45 +1,30 @@
-import { useState, useEffect } from "react";
-import logo from "./logo.svg";
+import { useState } from "react";
 import "./App.scss";
-import axios from "axios";
-import { Row, Col, Divider } from "antd";
+import { Row, Col } from "antd";
 import Header from "./components/Header";
 import Filters from "./components/Filters";
 import NobelPrizeDetails from "./components/NobelPrizeDetails";
 
 function App() {
   const [data, setData] = useState(0);
-  const [currentAwardYear, setCurrentAwardYear] = useState([]);
-
-  const getData = async () => {
-    await axios
-      .get("https://api.nobelprize.org/2.1/nobelPrizes")
-      .then((res, err) => {
-        if (err) console.log(err);
-        else setData(res.data);
-      });
-  };
-
-  useEffect(() => {
-    if (data === 0) getData();
-  }, [data]);
+  const [currentAwardYear, setCurrentAwardYear] = useState(0);
 
   return (
     <div className="App m-10">
-      <Row>
-        <Col>
-          <Header />
+      <Row className="mb-3">
+        <Col span={24}>
+          <Header currentAwardYear={currentAwardYear} />
         </Col>
       </Row>
-      <Divider orientation="left">sss</Divider>
-      <Row>
-        <Col>
+      <Row className="flex">
+        <Col span={8}>
           <Filters
             data={data}
             setData={setData}
-            currentAwardYear={currentAwardYear}
             setCurrentAwardYear={setCurrentAwardYear}
           />
+        </Col>
+        <Col span={16}>
           <NobelPrizeDetails data={data} setData={setData} />
         </Col>
       </Row>
