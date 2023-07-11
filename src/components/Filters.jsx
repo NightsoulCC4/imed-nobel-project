@@ -6,14 +6,14 @@ export default function Filters({ data, setData, setCurrentAwardYear }) {
   const years = React.useRef(new Date().getFullYear());
   years.first = 1901;
 
-  const [currentYear, setCurrentYear] = React.useState(1901);
+  const [currentYear, setCurrentYear] = React.useState(2023);
   const [sumPrizeAmount, setSumPrizeAmount] = React.useState(0);
 
   let awardYear = [];
   let awardYearSorted;
 
   if (years.first !== undefined)
-    for (let i = years.first; i <= years.current; i++) awardYear.push(i);
+    for (let i = years.current; i >= years.first; i--) awardYear.push(i);
 
   if (awardYear[0])
     awardYearSorted = awardYear.map((item, index) => {
@@ -42,15 +42,13 @@ export default function Filters({ data, setData, setCurrentAwardYear }) {
       });
   };
 
-  console.log(data);
-
   return (
     <div className="flex flex-col gap-3 justify-center items-center bg-yellow-400 border-black border-2 max-w-full h-[83vh] ">
       <div className="flex gap-3 justify-center items-center mx-5">
         <Select
           onChange={(value) => setCurrentYear(value)}
           options={awardYearSorted}
-          defaultValue={1901}
+          defaultValue={2023}
         ></Select>
         <Button className="bg-white" onClick={() => getData(currentYear)}>
           Apply Filter
@@ -61,9 +59,9 @@ export default function Filters({ data, setData, setCurrentAwardYear }) {
       {data === 0 ? (
         <></>
       ) : (
-        <div className="">
+        <h2 className="text-2xl">
           Prize Amount: {sumPrizeAmount}
-        </div>
+        </h2>
       )}
     </div>
   );

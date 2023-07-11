@@ -45,7 +45,7 @@ export default function NobelPrizeDetails(props) {
   return (
     <div className="border-black bg-yellow-400 border-2 max-w-full h-[83vh] flex justify-center items-center">
       {formattedData && formattedData.length !== 0 ? (
-        <Table columns={columns} dataSource={formattedData} />
+        <Table columns={columns} dataSource={formattedData} className="mx-4" />
       ) : (
         <h1 className="text-red-600 text-center text-8xl">No-Data</h1>
       )}
